@@ -1,0 +1,63 @@
+---
+// 你的技能数据
+const skillData = {
+  labels: ['Python', 'Tableau', 'SQL', 'Excel', '数据可视化', '机器学习', '前端开发'],
+  datasets: [{
+    label: '技能熟练度',
+    data: [90, 85, 80, 85, 80, 65, 70], // 与你提供的技能栈对应
+    backgroundColor: 'rgba(155, 183, 212, 0.2)', //莫兰迪蓝
+    borderColor: 'rgba(155, 183, 212, 1)',
+    pointBackgroundColor: 'rgba(155, 183, 212, 1)',
+    pointBorderColor: '#fff',
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: 'rgba(155, 183, 212, 1)'
+  }]
+};
+
+const config = {
+  type: 'radar',
+  data: skillData,
+  options: {
+    scales: {
+      r: {
+        angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+        grid: { color: 'rgba(0, 0, 0, 0.1)' },
+        pointLabels: { color: '#495867', font: { size: 14 } },
+        suggestedMin: 0,
+        suggestedMax: 100,
+        ticks: { stepSize: 20, backdropColor: 'transparent' }
+      }
+    },
+    plugins: {
+      legend: { display: false }
+    },
+    elements: {
+      line: { tension: 0.2 }
+    }
+  }
+};
+---
+
+<div>
+  <canvas id="skillsRadarChart"></canvas>
+</div>
+
+<script>
+  // 在 Astro 中，我们需要使用不同的方式传递数据到客户端
+  // 我们将配置对象序列化为 JSON 字符串，然后在客户端解析
+  const configStr = JSON.stringify(config);
+  
+  // 等待 DOM 加载完成
+  document.addEventListener('DOMContentLoaded', () => {
+    // 动态导入 Chart.js 以避免在构建时出现问题
+    import('chart.js/auto').then(({ default: Chart }) => {
+      const ctx = document.getElementById('skillsRadarChart');
+      if (ctx) {
+        const config = JSON.parse(configStr);
+        new Chart(ctx, config);
+      }
+    }).catch(error => {
+      console.error('Error loading Chart.js:', error);
+    });
+  });
+</script>

@@ -1,0 +1,52 @@
+---
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <!-- 引入Google字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 引入全局样式 -->
+    <link rel="stylesheet" href="/styles/global.css">
+  </head>
+  <body class="font-sans bg-white text-muted-dark antialiased">
+    <!-- 导航栏 -->
+    <header class="border-b border-muted-grey/20 sticky top-0 bg-white/90 backdrop-blur-sm z-10">
+      <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <a href="/" class="text-xl font-bold text-muted-blue">朱捷登</a>
+        <div class="flex gap-6">
+          <a href="/" class="hover:text-muted-blue">首页</a>
+          <a href="/projects" class="hover:text-muted-blue">项目</a>
+          <a href="/about" class="hover:text-muted-blue">关于</a>
+          <a href="/contact" class="hover:text-muted-blue">联系</a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="container mx-auto px-4 py-8 max-w-5xl">
+      <slot />
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="border-t border-muted-grey/20 py-8 mt-16">
+      <div class="container mx-auto px-4 text-center">
+        <p class="text-muted-dark/60">&copy; 2024 朱捷登. 保留所有权利.</p>
+        <div class="flex justify-center gap-4 mt-4">
+          <a href="https://github.com/GUYUSHU-zjd" class="text-muted-dark/60 hover:text-muted-blue" target="_blank">
+            GitHub
+          </a>
+          <a href="mailto:zjd3255768319@163.com" class="text-muted-dark/60 hover:text-muted-blue">
+            邮箱
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
