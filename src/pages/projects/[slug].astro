@@ -1,0 +1,130 @@
+---
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  console.log('构建项目详情页，找到项目:', projects.map(p => p.slug));
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+---
+
+<html lang="zh">
+  <head>
+    <title>{project.data.title} | 我的作品集</title>
+    <meta name="description" content={project.data.description} />
+    <link rel="stylesheet" href="/styles/global.css">
+  </head>
+  <body>
+    <article class="max-w-4xl mx-auto px-4 py-8">
+      <!-- 项目头部 -->
+      <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">{project.data.title}</h1>
+        <p class="text-lg text-gray-600 mb-4">{project.data.description}</p>
+        
+        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-4">
+          <time datetime={new Date(project.data.date).toISOString()}>
+            完成日期: {new Date(project.data.date).toLocaleDateString('zh-CN')}
+          </time>
+          
+          <div>
+            {project.data.tools?.map((tool) => (
+              <span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs mr-2 mb-2">{tool}</span>
+            ))}
+          </div>
+        </div>
+        
+        {/* 项目链接 */}
+        <div class="flex flex-wrap gap-4">
+          <a href={project.data.github_url} target="_blank" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+            查看完整代码
+          </a>
+          
+          {project.data.demo_url && (
+            <a href={project.data.demo_url} target="_blank" class="inline-flex items-center px-4 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+              </svg>
+              查看在线演示
+            </a>
+          )}
+        </div>
+      </header>
+
+      <hr class="my-8 border-gray-200" />
+
+      <!-- 项目正文内容 -->
+      <div class="prose prose-lg max-w-none mb-12">
+        <Content />
+      </div>
+    </article>
+  </body>
+</html>
+
+<style is:global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  
+  .prose {
+    color: theme('colors.gray.800');
+  }
+  
+  .prose h2 {
+    color: theme('colors.gray.900');
+    font-weight: theme('fontWeight.semibold');
+    margin-top: theme('spacing.8');
+    margin-bottom: theme('spacing.4');
+  }
+  
+  .prose h3 {
+    color: theme('colors.gray.900');
+    font-weight: theme('fontWeight.semibold');
+    margin-top: theme('spacing.6');
+    margin-bottom: theme('spacing.3');
+  }
+  
+  .prose p {
+    margin-bottom: theme('spacing.4');
+  }
+  
+  .prose ul, .prose ol {
+    margin-bottom: theme('spacing.4');
+  }
+  
+  .prose li {
+    margin-bottom: theme('spacing.2');
+  }
+  
+  .prose code {
+    background-color: theme('colors.gray.100');
+    padding: theme('spacing.1');
+    border-radius: theme('borderRadius.md');
+    font-size: theme('fontSize.sm');
+  }
+  
+  .prose pre {
+    background-color: theme('colors.gray.900');
+    color: theme('colors.gray.100');
+    padding: theme('spacing.4');
+    border-radius: theme('borderRadius.lg');
+    margin-bottom: theme('spacing.4');
+    overflow-x: auto;
+  }
+  
+  .prose blockquote {
+    border-left-color: theme('colors.blue.500');
+    background-color: theme('colors.blue.50');
+    padding: theme('spacing.4');
+    border-radius: theme('borderRadius.md');
+    margin: theme('spacing.6') 0;
+  }
+</style>

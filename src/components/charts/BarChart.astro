@@ -1,0 +1,19 @@
+---
+// 这是一个简单的柱状图组件占位符
+const { client:load } = Astro.props;
+---
+
+<div class="bg-gray-100 p-4 rounded-lg border">
+  <h3 class="text-lg font-semibold mb-2">柱状图组件</h3>
+  <p class="text-gray-600">这里是柱状图可视化区域</p>
+  <div class="mt-4 h-48 bg-gradient-to-r from-blue-400 to-purple-500 rounded flex items-center justify-center text-white">
+    柱状图预览
+  </div>
+  <p class="text-sm text-gray-500 mt-2">使用 Chart.js 或 D3.js 实现真实图表</p>
+</div>
+
+<!-- 如果是简单的占位符，可以删除下面的脚本 -->
+<script>
+  // 这里以后可以添加真实的图表初始化代码
+  console.log('BarChart 组件已加载');
+</script>

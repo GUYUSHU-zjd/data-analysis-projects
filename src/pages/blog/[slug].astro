@@ -1,84 +1,132 @@
 ---
-// 1. 获取动态路由参数和项目数据
 import { getCollection } from 'astro:content';
+
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
-  return projects.map((project) => ({
-    params: { slug: project.slug },
-    props: { project },
+  const posts = await getCollection('blog');
+  console.log('构建博客详情页，找到文章:', posts.map(p => p.slug));
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
   }));
 }
-const { project } = Astro.props;
-// 2. 渲染Markdown内容
-const { Content } = await project.render();
+
+const { post } = Astro.props;
+const { Content } = await post.render();
 ---
 
-<!-- 3. 页面HTML模板 -->
 <html lang="zh">
   <head>
-    <title>{project.data.title} | 我的作品集</title>
-    <meta name="description" content={project.data.description} />
+    <title>{post.data.title} | 博客</title>
+    <meta name="description" content={post.data.description} />
+    <link rel="stylesheet" href="/styles/global.css">
   </head>
   <body>
-    <article>
-      <!-- 项目头部 -->
-      <header>
-        <h1>{project.data.title}</h1>
-        <p>{project.data.description}</p>
-        <time datetime={project.data.pubDate.toISOString()}>
-          完成日期: {project.data.pubDate.toLocaleDateString('zh-CN')}
-        </time>
-        <div>
-          {/* 技能标签云 */}
-          {project.data.tools.map((tool) => (
-            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm mr-2">{tool}</span>
-          ))}
-        </div>
-        {/* 项目链接 */}
-        <div class="my-4">
-          <a href={project.data.github_url} target="_blank" class="btn btn-primary">查看完整代码</a>
-          {project.data.demo_url && (
-            <a href={project.data.demo_url} target="_blank" class="btn btn-secondary">查看在线演示</a>
+    <article class="max-w-4xl mx-auto px-4 py-8">
+      <!-- 文章头部 -->
+      <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">{post.data.title}</h1>
+        
+        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-4">
+          <time datetime={new Date(post.data.date).toISOString()}>
+            发布日期: {new Date(post.data.date).toLocaleDateString('zh-CN')}
+          </time>
+          
+          {post.data.tags && post.data.tags.length > 0 && (
+            <div class="flex flex-wrap gap-2">
+              {post.data.tags.map((tag) => (
+                <span class="inline-block bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">{tag}</span>
+              ))}
+            </div>
           )}
         </div>
+        
+        {post.data.author && (
+          <div class="text-sm text-gray-500">
+            作者: {post.data.author}
+          </div>
+        )}
       </header>
 
-      <hr />
+      <hr class="my-8 border-gray-200" />
 
-      <!-- 项目正文内容 (来自Markdown) -->
-      <div class="prose prose-lg max-w-none">
+      <!-- 文章正文内容 -->
+      <div class="prose prose-lg max-w-none mb-12">
         <Content />
       </div>
 
-      <!-- 在这里嵌入你的自定义图表组件 -->
-      <div class="my-12">
-        <h2>关键指标可视化</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <h3>销售额月度趋势</h3>
-            <!-- 调用你之前在 components/charts/ 里创建的组件 -->
-            <BarChart client:load />
+      <!-- 文章底部 -->
+      <footer class="border-t border-gray-200 pt-8 mt-8">
+        <div class="flex justify-between items-center">
+          <div class="text-sm text-gray-500">
+            {post.data.author && `作者: ${post.data.author}`}
           </div>
-          <div>
-            <h3>产品类别分布</h3>
-            <!-- 另一个图表 -->
-            <CustomViz client:visible />
+          <div class="text-sm text-gray-500">
+            <a href="/blog" class="text-blue-600 hover:text-blue-800">
+              ← 返回博客列表
+            </a>
           </div>
         </div>
-      </div>
+      </footer>
     </article>
   </body>
 </html>
 
-<style>
-  /* 可选的局部样式 */
-  .btn {
-    @apply inline-block px-4 py-2 rounded font-medium no-underline mr-4;
+<style is:global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  
+  .prose {
+    color: theme('colors.gray.800');
   }
-  .btn-primary {
-    @apply bg-blue-600 text-white hover:bg-blue-700;
+  
+  .prose h2 {
+    color: theme('colors.gray.900');
+    font-weight: theme('fontWeight.semibold');
+    margin-top: theme('spacing.8');
+    margin-bottom: theme('spacing.4');
   }
-  .btn-secondary {
-    @apply bg-gray-200 text-gray-900 hover:bg-gray-300;
+  
+  .prose h3 {
+    color: theme('colors.gray.900');
+    font-weight: theme('fontWeight.semibold');
+    margin-top: theme('spacing.6');
+    margin-bottom: theme('spacing.3');
+  }
+  
+  .prose p {
+    margin-bottom: theme('spacing.4');
+  }
+  
+  .prose ul, .prose ol {
+    margin-bottom: theme('spacing.4');
+  }
+  
+  .prose li {
+    margin-bottom: theme('spacing.2');
+  }
+  
+  .prose code {
+    background-color: theme('colors.gray.100');
+    padding: theme('spacing.1');
+    border-radius: theme('borderRadius.md');
+    font-size: theme('fontSize.sm');
+  }
+  
+  .prose pre {
+    background-color: theme('colors.gray.900');
+    color: theme('colors.gray.100');
+    padding: theme('spacing.4');
+    border-radius: theme('borderRadius.lg');
+    margin-bottom: theme('spacing.4');
+    overflow-x: auto;
+  }
+  
+  .prose blockquote {
+    border-left-color: theme('colors.blue.500');
+    background-color: theme('colors.blue.50');
+    padding: theme('spacing.4');
+    border-radius: theme('borderRadius.md');
+    margin: theme('spacing.6') 0;
   }
 </style>
