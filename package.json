@@ -5,18 +5,28 @@
   "description": "A personal data analysis portfolio site built with Astro",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "deploy": "npm run build && npx gh-pages -d dist"
   },
   "dependencies": {
-    "astro": "^4.0.0"
+    "astro": "4.15.0",
+    "prismjs": "1.30.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.2.0",
-    "@astrojs/tailwind": "^5.0.0",
-    "chart.js": "^4.5.0",
-    "tailwindcss": "^3.3.0"
-  }
+    "@astrojs/check": "0.2.0",
+    "@astrojs/tailwind": "5.0.0",
+    "chart.js": "4.4.0",
+    "tailwindcss": "3.3.5",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=18.14.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guyushu-zjd/data-analysis-projects.git"
+  },
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT"
 }

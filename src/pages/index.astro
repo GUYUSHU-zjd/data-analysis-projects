@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SkillRadar from '../components/charts/SkillRadar.astro';
 
 // 获取项目数据
 const projects = await Astro.glob('../content/projects/*.md');
@@ -11,27 +10,27 @@ const featuredProjects = projects
 
 <BaseLayout title="首页 - 朱捷登的数据分析作品集">
   <!-- Hero 区域 -->
-  <section class="text-center py-16 md:py-24 bg-gradient-to-r from-muted-blue/10 to-muted-green/10 rounded-2xl mb-16">
-    <h1 class="text-4xl md:text-5xl font-bold text-muted-dark mb-4">朱捷登</h1>
-    <p class="text-xl md:text-2xl text-muted-dark/70 mb-8">以数据清洗构建可信分析基础，驱动可视化决策的数据分析师</p>
+  <section class="text-center py-16 md:py-24 bg-gradient-to-r from-blue-50 to-green-50 rounded-2xl mb-16">
+    <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">朱捷登</h1>
+    <p class="text-xl md:text-2xl text-gray-600 mb-8">以数据清洗构建可信分析基础，驱动可视化决策的数据分析师</p>
     <div class="flex justify-center gap-4">
-      <a href="/projects" class="bg-muted-blue text-white px-6 py-3 rounded-lg hover:bg-muted-blue/80 transition-colors">查看我的项目</a>
-      <a href="/about" class="border border-muted-blue text-muted-blue px-6 py-3 rounded-lg hover:bg-muted-blue/10 transition-colors">关于我</a>
+      <a href="/projects" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">查看我的项目</a>
+      <a href="/about" class="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors">关于我</a>
     </div>
   </section>
 
   <!-- 精选项目区域 -->
   <section class="mb-16">
-    <h2 class="text-2xl font-semibold text-muted-dark mb-8 border-l-4 border-muted-blue pl-4">精选项目</h2>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-8 border-l-4 border-blue-500 pl-4">精选项目</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {featuredProjects.map((project) => (
         <a href={`/projects/${project.file.split('/').pop()?.replace('.md', '')}`} class="group block hover:no-underline">
-          <div class="border border-muted-grey/30 rounded-xl p-6 h-full transition-all duration-300 group-hover:shadow-lg group-hover:border-muted-blue/50">
-            <h3 class="text-xl font-semibold text-muted-dark group-hover:text-muted-blue mb-2">{project.frontmatter.title}</h3>
-            <p class="text-muted-dark/60 mb-4">{project.frontmatter.description}</p>
+          <div class="border border-gray-200 rounded-xl p-6 h-full transition-all duration-300 group-hover:shadow-lg group-hover:border-blue-300">
+            <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 mb-2">{project.frontmatter.title}</h3>
+            <p class="text-gray-600 mb-4">{project.frontmatter.description}</p>
             <div class="mt-auto">
               {project.frontmatter.tools.slice(0, 4).map((tool) => (
-                <span class="inline-block bg-muted-green/20 text-muted-dark text-xs px-3 py-1 rounded-full mr-2 mb-2">{tool}</span>
+                <span class="inline-block bg-green-100 text-gray-800 text-xs px-3 py-1 rounded-full mr-2 mb-2">{tool}</span>
               ))}
             </div>
           </div>
@@ -39,7 +38,7 @@ const featuredProjects = projects
       ))}
     </div>
     <div class="text-center mt-8">
-      <a href="/projects" class="text-muted-blue hover:text-muted-blue/80 font-medium inline-flex items-center">
+      <a href="/projects" class="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center">
         查看所有项目
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -48,25 +47,54 @@ const featuredProjects = projects
     </div>
   </section>
 
-  <!-- 技能区域 -->
+  <!-- 技能区域 - 使用简单列表替代图表 -->
   <section class="mb-16">
-    <h2 class="text-2xl font-semibold text-muted-dark mb-8 border-l-4 border-muted-blue pl-4">技术栈</h2>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-8 border-l-4 border-blue-500 pl-4">技术栈</h2>
     <div class="bg-white p-8 rounded-xl shadow-sm">
-      <SkillRadar client:load />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="flex items-center">
+          <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+          <span class="font-medium">Python (Pandas/NumPy)</span>
+          <div class="ml-auto bg-gray-100 px-2 py-1 rounded text-sm">90%</div>
+        </div>
+        <div class="flex items-center">
+          <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+          <span class="font-medium">Tableau</span>
+          <div class="ml-auto bg-gray-100 px-2 py-1 rounded text-sm">85%</div>
+        </div>
+        <div class="flex items-center">
+          <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+          <span class="font-medium">SQL</span>
+          <div class="ml-auto bg-gray-100 px-2 py-1 rounded text-sm">80%</div>
+        </div>
+        <div class="flex items-center">
+          <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+          <span class="font-medium">Excel</span>
+          <div class="ml-auto bg-gray-100 px-2 py-1 rounded text-sm">85%</div>
+        </div>
+        <div class="flex items-center">
+          <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+          <span class="font-medium">数据可视化</span>
+          <div class="ml-auto bg-gray-100 px-2 py-1 rounded text-sm">80%</div>
+        </div>
+        <div class="flex items-center">
+          <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+          <span class="font-medium">机器学习基础</span>
+          <div class="ml-auto bg-gray-100 px-2 py-1 rounded text-sm">65%</div>
+        </div>
+        <div class="flex items-center">
+          <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+          <span class="font-medium">前端开发</span>
+          <div class="ml-auto bg-gray-100 px-2 py-1 rounded text-sm">70%</div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- 联系区域 -->
-  <section class="bg-muted-beige/30 rounded-2xl p-8 text-center">
-    <h2 class="text-2xl font-semibold text-muted-dark mb-4">准备好开始合作了吗？</h2>
-    <p class="text-muted-dark/70 mb-6">如果您有数据分析需求或想要了解更多关于我的项目，请随时联系我。</p>
-    <a href="/contact" class="bg-muted-blue text-white px-6 py-3 rounded-lg hover:bg-muted-blue/80 transition-colors inline-block">联系我</a>
+  <section class="bg-gray-50 rounded-2xl p-8 text-center">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">准备好开始合作了吗？</h2>
+    <p class="text-gray-600 mb-6">如果您有数据分析需求或想要了解更多关于我的项目，请随时联系我。</p>
+    <a href="/contact" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-block">联系我</a>
   </section>
 </BaseLayout>
-
-<style>
-  /* 确保Tailwind样式正确应用 */
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-</style>

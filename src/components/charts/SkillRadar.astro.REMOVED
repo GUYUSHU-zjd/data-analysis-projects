@@ -1,0 +1,40 @@
+<!-- 技能区域 -->
+<section class="mb-16">
+  <h2 class="text-2xl font-semibold text-muted-dark mb-8 border-l-4 border-muted-blue pl-4">技术栈</h2>
+  <div class="bg-white p-8 rounded-xl shadow-sm">
+    <!-- 移除下面这行 -->
+    <!-- <SkillRadar client:load /> -->
+    
+    <!-- 替换为这个简单的技能列表 -->
+    <div class="grid grid-cols-2 gap-4">
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-muted-blue rounded-full mr-2"></div>
+        <span>Python (Pandas/NumPy) - 90%</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-muted-blue rounded-full mr-2"></div>
+        <span>Tableau - 85%</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-muted-blue rounded-full mr-2"></div>
+        <span>SQL - 80%</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-muted-blue rounded-full mr-2"></div>
+        <span>Excel - 85%</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-muted-blue rounded-full mr-2"></div>
+        <span>数据可视化 - 80%</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-muted-blue rounded-full mr-2"></div>
+        <span>机器学习基础 - 65%</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-muted-blue rounded-full mr-2"></div>
+        <span>前端开发 - 70%</span>
+      </div>
+    </div>
+  </div>
+</section>
