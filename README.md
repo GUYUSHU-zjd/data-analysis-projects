@@ -1,2 +1,2 @@
 # data-analysis-projects
-My data analysis portfolio using Python, SQL, and Tableau
+使用 Python、SQL 和 Tableau 完成的数据分析作品集
