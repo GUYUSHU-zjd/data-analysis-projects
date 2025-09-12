@@ -1,22 +1,20 @@
 ---
-// 你的技能数据
-const skillData = {
-  labels: ['Python', 'Tableau', 'SQL', 'Excel', '数据可视化', '机器学习', '前端开发'],
-  datasets: [{
-    label: '技能熟练度',
-    data: [90, 85, 80, 85, 80, 65, 70], // 与你提供的技能栈对应
-    backgroundColor: 'rgba(155, 183, 212, 0.2)', //莫兰迪蓝
-    borderColor: 'rgba(155, 183, 212, 1)',
-    pointBackgroundColor: 'rgba(155, 183, 212, 1)',
-    pointBorderColor: '#fff',
-    pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: 'rgba(155, 183, 212, 1)'
-  }]
-};
-
-const config = {
+// 简化配置，避免复杂的对象处理
+const chartConfig = {
   type: 'radar',
-  data: skillData,
+  data: {
+    labels: ['Python', 'Tableau', 'SQL', 'Excel', '数据可视化', '机器学习', '前端开发'],
+    datasets: [{
+      label: '技能熟练度',
+      data: [90, 85, 80, 85, 80, 65, 70],
+      backgroundColor: 'rgba(155, 183, 212, 0.2)',
+      borderColor: 'rgba(155, 183, 212, 1)',
+      pointBackgroundColor: 'rgba(155, 183, 212, 1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(155, 183, 212, 1)'
+    }]
+  },
   options: {
     scales: {
       r: {
@@ -43,21 +41,15 @@ const config = {
 </div>
 
 <script>
-  // 在 Astro 中，我们需要使用不同的方式传递数据到客户端
-  // 我们将配置对象序列化为 JSON 字符串，然后在客户端解析
-  const configStr = JSON.stringify(config);
-  
-  // 等待 DOM 加载完成
+  // 使用更简单的方式初始化图表
   document.addEventListener('DOMContentLoaded', () => {
-    // 动态导入 Chart.js 以避免在构建时出现问题
-    import('chart.js/auto').then(({ default: Chart }) => {
-      const ctx = document.getElementById('skillsRadarChart');
-      if (ctx) {
-        const config = JSON.parse(configStr);
+    const ctx = document.getElementById('skillsRadarChart');
+    if (ctx) {
+      // 直接使用配置对象，避免 JSON 序列化问题
+      const config = <%= JSON.stringify(chartConfig) %>;
+      import('chart.js/auto').then(({ default: Chart }) => {
         new Chart(ctx, config);
-      }
-    }).catch(error => {
-      console.error('Error loading Chart.js:', error);
-    });
+      });
+    }
   });
 </script>
