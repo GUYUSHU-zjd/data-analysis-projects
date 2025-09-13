@@ -1,0 +1,250 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// 获取所有项目
+const projects = await getCollection('projects');
+
+// 按日期排序（最新的在前）
+const sortedProjects = projects.sort((a, b) => {
+  const dateA = a.data.date || a.data.pubDate;
+  const dateB = b.data.date || b.data.pubDate;
+  
+  if (!dateA && !dateB) return 0;
+  if (!dateA) return 1;
+  if (!dateB) return -1;
+  
+  return new Date(dateB).getTime() - new Date(dateA).getTime();
+});
+---
+
+<BaseLayout title="项目列表 - 数据分析作品集">
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <!-- 页面标题区域 -->
+    <div class="text-center mb-12">
+      <h1 class="text-3xl font-bold text-gray-800 mb-4">数据分析项目集</h1>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        这里展示了我完成的数据分析项目，涵盖了电商、销售、薪资等多个领域，
+        使用了Python、SQL、Tableau等多种工具和技术栈。
+      </p>
+    </div>
+
+    <!-- 项目统计信息 -->
+    <div class="bg-blue-50 rounded-xl p-6 mb-8">
+      <div class="flex flex-wrap justify-around gap-4 text-center">
+        <div>
+          <p class="text-2xl font-bold text-blue-800">{sortedProjects.length}</p>
+          <p class="text-sm text-blue-600">总项目数</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-blue-800">
+            {new Set(sortedProjects.flatMap(p => p.data.tools || [])).size}
+          </p>
+          <p class="text-sm text-blue-600">技术工具</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-blue-800">
+            {new Set(sortedProjects.flatMap(p => p.data.category ? [p.data.category] : [])).size}
+          </p>
+          <p class="text-sm text-blue-600">领域分类</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 项目筛选区域 (未来可扩展) -->
+    <div class="mb-8 flex justify-between items-center">
+      <h2 class="text-xl font-semibold text-gray-800">所有项目</h2>
+      
+      <!-- 排序选项 (占位符，未来可实现) -->
+      <div class="text-sm text-gray-500">
+        按日期排序
+      </div>
+    </div>
+
+    <!-- 项目网格 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      {sortedProjects.map((project) => {
+        // 安全访问属性，提供默认值
+        const title = project.data.title || '未命名项目';
+        const description = project.data.description || '暂无项目描述';
+        const tools = project.data.tools || [];
+        const category = project.data.category || '未分类';
+        
+        // 处理日期字段 (兼容 date 和 pubDate)
+        const projectDate = project.data.date || project.data.pubDate;
+        const formattedDate = projectDate 
+          ? new Date(projectDate).toLocaleDateString('zh-CN', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            })
+          : '日期未设置';
+        
+        // 处理项目链接
+        const githubUrl = project.data.githubUrl || project.data.github_url;
+        const demoUrl = project.data.demoUrl || project.data.demo_url;
+        
+        // 处理项目图片
+        const imageUrl = project.data.image || '/images/projects/default-project.jpg';
+
+        return (
+          <div class="group bg-white border border-gray-200 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-blue-300 h-full flex flex-col">
+            {/* 项目图片 */}
+            <div class="h-48 overflow-hidden bg-gray-100 relative">
+              <img 
+                src={imageUrl} 
+                alt={title}
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
+              />
+              {/* 分类标签 */}
+              <div class="absolute top-4 left-4">
+                <span class="inline-block bg-blue-600 text-white text-xs px-3 py-1 rounded-full">
+                  {category}
+                </span>
+              </div>
+            </div>
+            
+            {/* 项目内容 */}
+            <div class="p-6 flex-grow">
+              <h2 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600 mb-2 line-clamp-2">
+                {title}
+              </h2>
+              <p class="text-gray-600 mb-4 line-clamp-3">{description}</p>
+              
+              {/* 技术栈标签 */}
+              {tools.length > 0 && (
+                <div class="mb-4">
+                  <div class="flex flex-wrap gap-2">
+                    {tools.slice(0, 3).map((tool) => (
+                      <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
+                        {tool}
+                      </span>
+                    ))}
+                    {tools.length > 3 && (
+                      <span class="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
+                        +{tools.length - 3}更多
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* 项目底部信息 */}
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+              <div class="flex justify-between items-center text-sm">
+                <span class="text-gray-500">{formattedDate}</span>
+                
+                <div class="flex space-x-2">
+                  {githubUrl && (
+                    <a 
+                      href={githubUrl} 
+                      target="_blank" 
+                      class="text-gray-400 hover:text-gray-600 transition-colors"
+                      aria-label="查看代码"
+                      onclick="event.stopPropagation();"
+                    >
+                      <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                      </svg>
+                    </a>
+                  )}
+                  
+                  {demoUrl && (
+                    <a 
+                      href={demoUrl} 
+                      target="_blank" 
+                      class="text-gray-400 hover:text-gray-600 transition-colors"
+                      aria-label="查看演示"
+                      onclick="event.stopPropagation();"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            {/* 整个卡片作为链接 */}
+            <a 
+              href={`/projects/${project.slug}`} 
+              class="absolute inset-0 z-10"
+              aria-label={`查看项目: ${title}`}
+            ></a>
+          </div>
+        );
+      })}
+    </div>
+
+    {/* 空状态提示 */}
+    {sortedProjects.length === 0 && (
+      <div class="text-center py-16">
+        <div class="text-gray-300 mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-medium text-gray-700 mb-2">暂无项目</h3>
+        <p class="text-gray-500 mb-6">您还没有添加任何项目到作品集中</p>
+        <a 
+          href="https://github.com/GUYUSHU-zjd/data-analysis-projects/tree/main/src/content/projects" 
+          target="_blank"
+          class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+          </svg>
+          添加新项目
+        </a>
+      </div>
+    )}
+
+    {/* 联系区域 */}
+    <div class="bg-gray-50 rounded-xl p-8 text-center">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">想要合作项目吗？</h2>
+      <p class="text-gray-600 mb-6 max-w-2xl mx-auto">
+        如果您有数据分析需求或对我的项目感兴趣，欢迎联系我讨论合作机会。
+      </p>
+      <a 
+        href="/contact" 
+        class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+      >
+        联系我
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* 文本截断样式 */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  /* 卡片悬停效果 */
+  .group {
+    position: relative;
+  }
+  
+  /* 确保卡片内的链接不会干扰外部链接 */
+  .group a:not([aria-label]) {
+    position: relative;
+    z-index: 20;
+  }
+</style>

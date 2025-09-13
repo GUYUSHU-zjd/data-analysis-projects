@@ -1,9 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  console.log('构建博客详情页，找到文章:', posts.map(p => p.slug));
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: { post },
@@ -12,64 +12,76 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+
+// 安全访问属性
+const title = post.data.title || '未命名文章';
+const description = post.data.description || '';
+const pubDate = post.data.pubDate || post.data.date;
+const tags = post.data.tags || [];
+const author = post.data.author;
 ---
 
-<html lang="zh">
-  <head>
-    <title>{post.data.title} | 博客</title>
-    <meta name="description" content={post.data.description} />
-    <link rel="stylesheet" href="/styles/global.css">
-  </head>
-  <body>
-    <article class="max-w-4xl mx-auto px-4 py-8">
-      <!-- 文章头部 -->
-      <header class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">{post.data.title}</h1>
+<BaseLayout title={`${title} | 技术博客`}>
+  <article class="max-w-4xl mx-auto px-4 py-8">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">{title}</h1>
+      
+      {description && (
+        <p class="text-lg text-gray-600 mb-4">{description}</p>
+      )}
+      
+      <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-4">
+        {/* 安全日期渲染 */}
+        {(() => {
+          const date = pubDate ? new Date(pubDate) : null;
+          const isValidDate = date && !isNaN(date.getTime());
+
+          return isValidDate ? (
+            <time datetime={date.toISOString()}>
+              发布日期: {date.toLocaleDateString('zh-CN')}
+            </time>
+          ) : (
+            <span class="text-gray-400">日期未设置</span>
+          );
+        })()}
         
-        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-4">
-          <time datetime={new Date(post.data.date).toISOString()}>
-            发布日期: {new Date(post.data.date).toLocaleDateString('zh-CN')}
-          </time>
-          
-          {post.data.tags && post.data.tags.length > 0 && (
-            <div class="flex flex-wrap gap-2">
-              {post.data.tags.map((tag) => (
-                <span class="inline-block bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">{tag}</span>
-              ))}
-            </div>
-          )}
-        </div>
-        
-        {post.data.author && (
-          <div class="text-sm text-gray-500">
-            作者: {post.data.author}
+        {tags.length > 0 && (
+          <div class="flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <span class="inline-block bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">{tag}</span>
+            ))}
           </div>
         )}
-      </header>
-
-      <hr class="my-8 border-gray-200" />
-
-      <!-- 文章正文内容 -->
-      <div class="prose prose-lg max-w-none mb-12">
-        <Content />
       </div>
-
-      <!-- 文章底部 -->
-      <footer class="border-t border-gray-200 pt-8 mt-8">
-        <div class="flex justify-between items-center">
-          <div class="text-sm text-gray-500">
-            {post.data.author && `作者: ${post.data.author}`}
-          </div>
-          <div class="text-sm text-gray-500">
-            <a href="/blog" class="text-blue-600 hover:text-blue-800">
-              ← 返回博客列表
-            </a>
-          </div>
+      
+      {author && (
+        <div class="text-sm text-gray-500">
+          作者: {author}
         </div>
-      </footer>
-    </article>
-  </body>
-</html>
+      )}
+    </header>
+
+    <hr class="my-8 border-gray-200" />
+
+    <div class="prose prose-lg max-w-none mb-12">
+      <Content />
+    </div>
+
+    <footer class="border-t border-gray-200 pt-8 mt-8">
+      <div class="flex justify-between items-center">
+        <div class="text-sm text-gray-500">
+          {author && `作者: ${author}`}
+        </div>
+        <div class="text-sm text-gray-500">
+          <a href="/blog" class="text-blue-600 hover:text-blue-800">
+            ← 返回博客列表
+          </a>
+        </div>
+      </div>
+    </footer>
+  </article>
+</BaseLayout>
+
 
 <style is:global>
   @tailwind base;

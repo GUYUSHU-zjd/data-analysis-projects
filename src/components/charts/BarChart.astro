@@ -1,19 +1,25 @@
 ---
-// 这是一个简单的柱状图组件占位符
-const { client:load } = Astro.props;
+const { title } = Astro.props;
+import Navigation from '../components/Navigation.astro';
 ---
 
-<div class="bg-gray-100 p-4 rounded-lg border">
-  <h3 class="text-lg font-semibold mb-2">柱状图组件</h3>
-  <p class="text-gray-600">这里是柱状图可视化区域</p>
-  <div class="mt-4 h-48 bg-gradient-to-r from-blue-400 to-purple-500 rounded flex items-center justify-center text-white">
-    柱状图预览
-  </div>
-  <p class="text-sm text-gray-500 mt-2">使用 Chart.js 或 D3.js 实现真实图表</p>
-</div>
-
-<!-- 如果是简单的占位符，可以删除下面的脚本 -->
-<script>
-  // 这里以后可以添加真实的图表初始化代码
-  console.log('BarChart 组件已加载');
-</script>
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <link rel="stylesheet" href="/styles/global.css">
+  </head>
+  <body class="bg-gray-50 min-h-screen flex flex-col">
+    <Navigation />
+    <main class="flex-grow">
+      <slot />
+    </main>
+    <footer class="bg-white border-t border-gray-200 mt-16">
+      <div class="max-w-6xl mx-auto px-4 py-6 text-center text-gray-600">
+        <p>© 2025 数据分析作品集. 使用 Astro 构建.</p>
+      </div>
+    </footer>
+  </body>
+</html>

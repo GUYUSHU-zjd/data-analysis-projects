@@ -1,0 +1,25 @@
+---
+const base = Astro.url.base || '/';
+---
+
+<nav class="bg-white shadow-sm border-b border-gray-200">
+  <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+    <a href={base} class="text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors">
+      数据分析作品集
+    </a>
+    
+    <div class="flex space-x-6">
+      <a href={base} class="text-gray-600 hover:text-blue-600 transition-colors py-2">首页</a>
+      <a href={`${base}projects/`} class="text-gray-600 hover:text-blue-600 transition-colors py-2">项目</a>
+      <a href={`${base}blog/`} class="text-gray-600 hover:text-blue-600 transition-colors py-2">博客</a>
+      <a href={`${base}about/`} class="text-gray-600 hover:text-blue-600 transition-colors py-2">关于</a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  a[href="${Astro.url.pathname}"] {
+    color: #2563eb;
+    font-weight: 600;
+  }
+</style>

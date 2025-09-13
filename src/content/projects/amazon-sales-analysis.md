@@ -1,7 +1,7 @@
 ---
 title: "亚马逊产品销售数据分析"
 description: "对42,675条亚马逊商品数据进行深度清洗与可视化，识别高转化率商品特征，驱动GMV提升策略。"
-pubDate: 2024-08-01
+pubDate: 2025-08-01
 author: "朱捷登"
 tools: ["Python", "Pandas", "NumPy", "Tableau", "数据清洗", "数据可视化"]
 category: "电商分析"

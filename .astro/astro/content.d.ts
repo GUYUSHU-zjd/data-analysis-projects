@@ -150,19 +150,26 @@ declare module 'astro:content' {
 } & { render(): Render[".md"] };
 };
 "projects": {
+"Excel销售数据仪表盘.md": {
+	id: "Excel销售数据仪表盘.md";
+  slug: "excel销售数据仪表盘";
+  body: string;
+  collection: "projects";
+  data: InferEntrySchema<"projects">
+} & { render(): Render[".md"] };
 "amazon-sales-analysis.md": {
 	id: "amazon-sales-analysis.md";
   slug: "amazon-sales-analysis";
   body: string;
   collection: "projects";
-  data: any
+  data: InferEntrySchema<"projects">
 } & { render(): Render[".md"] };
-"project-2.md": {
-	id: "project-2.md";
-  slug: "project-2";
+"薪资数据分析.md": {
+	id: "薪资数据分析.md";
+  slug: "薪资数据分析";
   body: string;
   collection: "projects";
-  data: any
+  data: InferEntrySchema<"projects">
 } & { render(): Render[".md"] };
 };
 
