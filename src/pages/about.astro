@@ -6,82 +6,149 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <div class="max-w-4xl mx-auto px-4 py-8">
     <div class="text-center mb-12">
       <h1 class="text-3xl font-bold text-gray-800 mb-4">关于我</h1>
-      <p class="text-lg text-gray-600">数据分析师 | 数据可视化爱好者 | 问题解决者</p>
+      <p class="text-lg text-gray-600">数据分析专业大四学生 | 数据可视化爱好者 | 未来数据分析师</p>
     </div>
 
     <div class="bg-white rounded-xl p-8 shadow-sm mb-8">
-      <div class="flex flex-col md:flex-row gap-8 items-center">
-        <div class="w-48 h-48 bg-gray-200 rounded-full flex items-center justify-center text-gray-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
+    <div class="flex flex-col md:flex-row gap-8 items-center">
+        <!-- 头像部分 - 根据你的实际文件路径选择一种 -->
+        <!-- 选项1: 如果文件在 public/images/avatar.jpg -->
+        <div class="w-48 h-48 rounded-full overflow-hidden border-4 border-gray-100 shadow-md">
+        <img 
+            src="/images/avatar.jpg" 
+            alt="朱捷登的头像" 
+            class="w-full h-full object-cover"
+        />
         </div>
         <div class="flex-grow">
           <h2 class="text-2xl font-semibold text-gray-800 mb-4">朱捷登</h2>
-          <p class="text-gray-600 mb-4">我是一名专注于数据分析和可视化的专业人士，擅长使用Python、SQL、Tableau等工具从复杂数据中提取有价值的洞察。</p>
-          <p class="text-gray-600">我相信数据驱动的决策能够为企业带来真正的价值，并且热衷于将复杂的数据转化为清晰、易懂的可视化报告。</p>
+          <p class="text-gray-600 mb-4">我是一名湖南科技学院软件工程专业的大四学生，专注于数据分析和可视化领域。通过课程学习和个人项目实践，积累了丰富的数据处理和分析经验。</p>
+          <p class="text-gray-600">我相信数据驱动的决策能够为企业带来真正的价值，并且热衷于将复杂的数据转化为清晰、易懂的可视化报告，为决策提供有力支持。</p>
         </div>
       </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
       <div class="bg-white rounded-xl p-6 shadow-sm">
-        <h3 class="text-xl font-semibold text-gray-800 mb-4">技术栈</h3>
-        <ul class="space-y-2">
-          <li class="flex items-center">
-            <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-            Python (Pandas, NumPy, Matplotlib)
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">基本信息</h3>
+        <ul class="space-y-2 text-gray-600">
+          <li class="flex justify-between">
+            <span class="font-medium">姓名：</span>
+            <span>朱捷登</span>
           </li>
-          <li class="flex items-center">
-            <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-            SQL 数据库查询与优化
+          <li class="flex justify-between">
+            <span class="font-medium">民族：</span>
+            <span>汉</span>
           </li>
-          <li class="flex items-center">
-            <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-            Tableau 数据可视化
+          <li class="flex justify-between">
+            <span class="font-medium">电话：</span>
+            <span>19164713988</span>
           </li>
-          <li class="flex items-center">
-            <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-            Excel 高级数据分析
+          <li class="flex justify-between">
+            <span class="font-medium">邮箱：</span>
+            <span>zjd3255768319@163.com</span>
           </li>
-          <li class="flex items-center">
-            <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-            机器学习基础 (Scikit-learn)
+          <li class="flex justify-between">
+            <span class="font-medium">出生年月：</span>
+            <span>2005.02</span>
+          </li>
+          <li class="flex justify-between">
+            <span class="font-medium">身高：</span>
+            <span>183cm</span>
+          </li>
+          <li class="flex justify-between">
+            <span class="font-medium">毕业院校：</span>
+            <span>湖南科技学院</span>
+          </li>
+          <li class="flex justify-between">
+            <span class="font-medium">学历：</span>
+            <span>工科学士（预计2026.06毕业）</span>
           </li>
         </ul>
       </div>
 
       <div class="bg-white rounded-xl p-6 shadow-sm">
-        <h3 class="text-xl font-semibold text-gray-800 mb-4">专业领域</h3>
-        <ul class="space-y-2">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">技能证书</h3>
+        <ul class="space-y-2 text-gray-600">
           <li class="flex items-center">
-            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-            电商数据分析与洞察
+            <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+            普通话二级乙等
           </li>
           <li class="flex items-center">
-            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-            销售业绩监控与预测
+            <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+            机动车驾驶证C1（能独自长途驾驶）
           </li>
-          <li class="flex items-center">
-            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-            用户行为分析与 segmentation
+        </ul>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 shadow-sm mb-8">
+      <h3 class="text-xl font-semibold text-gray-800 mb-6">教育背景</h3>
+      <div class="space-y-6">
+        <div class="border-l-4 border-blue-500 pl-4">
+          <h4 class="text-lg font-medium text-gray-800">湖南科技学院 · 软件工程专业</h4>
+          <p class="text-gray-600">2022.09 - 2026.06（预计毕业）· 工科学士</p>
+          <div class="mt-4">
+            <h5 class="font-medium text-gray-700 mb-2">主修课程：</h5>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-gray-600">
+              <span>• Web前端开发</span>
+              <span>• C++语言程序设计</span>
+              <span>• 数据结构</span>
+              <span>• 数据库原理</span>
+              <span>• Java程序设计与应用开发</span>
+              <span>• 计算机操作系统</span>
+              <span>• Python程序设计</span>
+              <span>• 软件工程</span>
+              <span>• 软件测试</span>
+              <span>• 计算机网络</span>
+              <span>• JavaEE企业级应用</span>
+              <span>• Linux操作系统管理及应用</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">获奖情况</h3>
+        <ul class="space-y-3 text-gray-600">
+          <li class="flex items-start">
+            <span class="w-2 h-2 bg-green-500 rounded-full mt-2 mr-2"></span>
+            <span>获得中国国际大学生创新大赛全国铜奖</span>
           </li>
-          <li class="flex items-center">
-            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-            数据清洗与预处理
+          <li class="flex items-start">
+            <span class="w-2 h-2 bg-green-500 rounded-full mt-2 mr-2"></span>
+            <span>获得校级优秀青年志愿者</span>
           </li>
-          <li class="flex items-center">
-            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-            数据可视化仪表盘开发
+        </ul>
+      </div>
+
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">项目经验</h3>
+        <ul class="space-y-3 text-gray-600">
+          <li class="flex items-start">
+            <span class="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-2"></span>
+            <span>亚马逊产品销售数据分析 - 使用Python分析42,000+条商品数据</span>
+          </li>
+          <li class="flex items-start">
+            <span class="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-2"></span>
+            <span>Excel销售数据监控仪表盘 - 构建自动化销售监控系统</span>
+          </li>
+          <li class="flex items-start">
+            <span class="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-2"></span>
+            <span>薪资数据分析 - 探究多维度因素对薪酬水平的影响</span>
           </li>
         </ul>
       </div>
     </div>
 
     <div class="bg-white rounded-xl p-8 shadow-sm">
-      <h3 class="text-xl font-semibold text-gray-800 mb-6">工作经历</h3>
-      <div class="space-y-6">
-        
+      <h3 class="text-xl font-semibold text-gray-800 mb-6">职业目标</h3>
+      <div class="space-y-4 text-gray-600">
+        <p>作为一名即将毕业的软件工程专业学生，我希望能将技术能力与数据分析相结合，在企业中担任数据分析师或数据可视化工程师角色。</p>
+        <p>我期待参与数据驱动的决策过程，通过挖掘数据价值帮助企业优化业务流程，提升运营效率，并在此过程中不断学习和成长。</p>
+        <p>未来计划深入学习机器学习和大数据处理技术，拓展数据分析的技术边界，为企业提供更深层次的洞察和支持。</p>
       </div>
     </div>
   </div>
