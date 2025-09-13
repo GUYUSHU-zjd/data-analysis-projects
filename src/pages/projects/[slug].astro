@@ -1,26 +1,46 @@
 ---
-import { getCollection } from 'astro:content';
+// ✅ src/pages/projects/[slug].astro
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
+// ✅ 将 getCollection 移入 getStaticPaths
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
+  let projects = [];
+  try {
+    const { getCollection } = await import('astro:content');
+    projects = await getCollection('projects');
+  } catch (error) {
+    console.warn('无法获取项目内容集合:', error.message);
+    return []; // 返回空数组，避免构建失败
+  }
+
   return projects.map((project) => ({
     params: { slug: project.slug },
     props: { project },
   }));
 }
 
+// ✅ 从 Astro.props 获取当前项目
 const { project } = Astro.props;
-const { Content } = await project.render();
+let Content = null;
 
-// 安全访问属性 - 支持多种可能的字段命名
-const title = project.data.title || '未命名项目';
-const description = project.data.description || '';
-const tools = project.data.tools || [];
-const projectDate = project.data.date || project.data.pubDate;
-const githubUrl = project.data.githubUrl || project.data.github_url;
-const demoUrl = project.data.demoUrl || project.data.demo_url;
-const image = project.data.image;
+// ✅ 渲染内容
+if (project) {
+  try {
+    const rendered = await project.render();
+    Content = rendered.Content;
+  } catch (error) {
+    console.warn(`无法渲染项目 "${project.slug}":`, error.message);
+  }
+}
+
+// ✅ 安全访问属性
+const title = project?.data?.title || '未命名项目';
+const description = project?.data?.description || '';
+const tools = project?.data?.tools || [];
+const projectDate = project?.data?.date || project?.data?.pubDate;
+const githubUrl = project?.data?.githubUrl || project?.data?.github_url;
+const demoUrl = project?.data?.demoUrl || project?.data?.demo_url;
+const image = project?.data?.image;
 ---
 
 <BaseLayout title={`${title} | 数据分析作品集`}>
@@ -115,7 +135,7 @@ const image = project.data.image;
 
     <!-- 项目正文内容 -->
     <div class="prose prose-lg max-w-none mb-12">
-      <Content />
+      {Content ? <Content /> : <p>无法加载项目内容。</p>}
     </div>
     
     <!-- 项目导航 -->
