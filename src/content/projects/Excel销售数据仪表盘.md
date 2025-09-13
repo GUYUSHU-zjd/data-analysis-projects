@@ -9,6 +9,7 @@ github_url: "https://github.com/GUYUSHU-zjd/data-analysis-projects/tree/main/Exc
 demo_url: "" # 如果有在线Excel链接可以放在这里
 image: "/images/projects/amazon-thumbnail.jpg" # 请添加一张缩略图
 featured: true
+slug: "excel-data-analysis"
 ---
 ## 项目概述
 
