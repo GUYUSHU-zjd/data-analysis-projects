@@ -2,6 +2,8 @@
 // src/layouts/BaseLayout.astro
 const { title } = Astro.props;
 import Navigation from '../components/Navigation.astro';
+// 正确导入 global.css
+import '../styles/global.css';
 ---
 
 <!DOCTYPE html>
@@ -10,7 +12,12 @@ import Navigation from '../components/Navigation.astro';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
-    <link rel="stylesheet" href="/styles/global.css">
+    
+    <!-- 移除外部链接，使用导入方式 -->
+    <!-- <link rel="stylesheet" href="/styles/global.css"> -->
+    
+    <!-- 添加 favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="font-sans bg-white text-gray-800 antialiased">
     <Navigation />
@@ -23,7 +30,7 @@ import Navigation from '../components/Navigation.astro';
       <div class="container mx-auto px-4 text-center">
         <p class="text-gray-600">&copy; 2024 朱捷登. 保留所有权利.</p>
         <div class="flex justify-center gap-4 mt-4">
-          <a href="https://github.com/GUYUSHU-zjd" class="text-gray-600 hover:text-blue-600" target="_blank">
+          <a href="https://github.com/GUYUSHU-zjd" class="text-gray-600 hover:text-blue-600" target="_blank" rel="noopener noreferrer">
             GitHub
           </a>
           <a href="mailto:zjd3255768319@163.com" class="text-gray-600 hover:text-blue-600">
